@@ -163,23 +163,25 @@
           <!-- Portfolio Table -->
           <div class="portfolio-table-container" id="portfolioTableContainer" style="display: none;">
             <h3>Your Holdings</h3>
-            <table class="portfolio-table">
-              <thead>
-                <tr>
-                  <th>Token</th>
-                  <th>Amount</th>
-                  <th>Avg Buy Price</th>
-                  <th>Current Price</th>
-                  <th>Current Value</th>
-                  <th>Profit/Loss</th>
-                  <th>ROI</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="portfolioTableBody">
-                <!-- Portfolio items will be populated here -->
-              </tbody>
-            </table>
+            <div class="table-scroll-wrapper">
+              <table class="portfolio-table">
+                <thead>
+                  <tr>
+                    <th>Token</th>
+                    <th>Amount</th>
+                    <th>Avg Buy Price</th>
+                    <th>Current Price</th>
+                    <th>Current Value</th>
+                    <th>Profit/Loss</th>
+                    <th>ROI</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="portfolioTableBody">
+                  <!-- Portfolio items will be populated here -->
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <!-- Empty Portfolio State -->
@@ -201,22 +203,24 @@
     <!-- Popular Memecoins -->
     <div class="section">
       <h2>Popular Memecoins</h2>
-      <table>
-        <thead>
-          <tr>
-            <th data-sort="name">Name</th>
-            <th data-sort="symbol">Symbol</th>
-            <th data-sort="price">Price</th>
-            <th data-sort="volume">Volume (24h)</th>
-            <th data-sort="change">Change (24h)</th>
-            <th data-sort="liquidity">Liquidity</th>
-            <th data-sort="marketCap">Market Cap</th>
-          </tr>
-        </thead>
-        <tbody id="popular-tokens">
-          <tr><td colspan="7" class="loading">Loading popular tokens...</td></tr>
-        </tbody>
-      </table>
+      <div class="table-scroll-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="name">Name</th>
+              <th data-sort="symbol">Symbol</th>
+              <th data-sort="price">Price</th>
+              <th data-sort="volume">Volume (24h)</th>
+              <th data-sort="change">Change (24h)</th>
+              <th data-sort="liquidity">Liquidity</th>
+              <th data-sort="marketCap">Market Cap</th>
+            </tr>
+          </thead>
+          <tbody id="popular-tokens">
+            <tr><td colspan="7" class="loading">Loading popular tokens...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- New Listings -->
@@ -240,22 +244,24 @@
         </select>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th data-sort="name">Name</th>
-            <th data-sort="symbol">Symbol</th>
-            <th data-sort="price">Price</th>
-            <th data-sort="volume">Volume (24h)</th>
-            <th data-sort="change">Change (24h)</th>
-            <th data-sort="liquidity">Liquidity</th>
-            <th data-sort="marketCap">Market Cap</th>
-          </tr>
-        </thead>
-        <tbody id="new-tokens">
-          <tr><td colspan="7" class="loading">Loading new tokens...</td></tr>
-        </tbody>
-      </table>
+      <div class="table-scroll-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="name">Name</th>
+              <th data-sort="symbol">Symbol</th>
+              <th data-sort="price">Price</th>
+              <th data-sort="volume">Volume (24h)</th>
+              <th data-sort="change">Change (24h)</th>
+              <th data-sort="liquidity">Liquidity</th>
+              <th data-sort="marketCap">Market Cap</th>
+            </tr>
+          </thead>
+          <tbody id="new-tokens">
+            <tr><td colspan="7" class="loading">Loading new tokens...</td></tr>
+          </tbody>
+        </table>
+      </div>
 
       <p class="muted">Click a token to open chart and details in a new tab</p>
     </div>
@@ -274,7 +280,7 @@
           <option value="price">Price</option>
           <option value="volume">Volume</option>
           <option value="change">24h Change</option>
-          <option value="liquidity">Liquidity</option>
+          <option value="liquidity">Liquidity</li>
           <option value="marketCap">Market Cap</option>
         </select>
         <select id="highriskFilterSelect">
@@ -284,22 +290,24 @@
         </select>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th data-sort="name">Name</th>
-            <th data-sort="symbol">Symbol</th>
-            <th data-sort="price">Price</th>
-            <th data-sort="volume">Volume (24h)</th>
-            <th data-sort="change">Change (24h)</th>
-            <th data-sort="liquidity">Liquidity</th>
-            <th data-sort="marketCap">Market Cap</th>
-          </tr>
-        </thead>
-        <tbody id="highrisk-tokens">
-          <tr><td colspan="7" class="loading">Loading high risk tokens...</td></tr>
-        </tbody>
-      </table>
+      <div class="table-scroll-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="name">Name</th>
+              <th data-sort="symbol">Symbol</th>
+              <th data-sort="price">Price</th>
+              <th data-sort="volume">Volume (24h)</th>
+              <th data-sort="change">Change (24h)</th>
+              <th data-sort="liquidity">Liquidity</th>
+              <th data-sort="marketCap">Market Cap</th>
+            </tr>
+          </thead>
+          <tbody id="highrisk-tokens">
+            <tr><td colspan="7" class="loading">Loading high risk tokens...</td></tr>
+          </tbody>
+        </table>
+      </div>
 
       <p class="muted warning-text">
         <strong>Warning:</strong> These tokens are highly speculative and risky. Only invest what you can afford to lose.
@@ -405,694 +413,5 @@
       document.getElementById("statusText").textContent = "Connected";
     }
   </script>
-</body>
-</html>         grid-template-columns: 1fr;
-            }
-            
-            .chart-container {
-                height: 250px;
-            }
-            
-            .search-box {
-                width: 100%;
-                margin-top: 15px;
-            }
-            
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .tokens-table {
-                display: block;
-                overflow-x: auto;
-            }
-            
-            .token-config {
-                grid-template-columns: 1fr;
-            }
-            
-            header {
-                flex-direction: column;
-                gap: 20px;
-                align-items: flex-start;
-            }
-            
-            .wallet-info {
-                width: 100%;
-                justify-content: space-between;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-wallet"></i>
-                <span>Solana Wallet Tracker</span>
-            </div>
-            <div class="wallet-info">
-                <div class="wallet-address">
-                    <span class="short-address">4pRF...1kVc</span>
-                    <span class="full-address" style="display:none">4pRFMaN7vV35j7iQW9UCPmuWirRd3noGLywguP2i1kVc</span>
-                </div>
-                <button class="copy-btn" title="Copy address">
-                    <i class="far fa-copy"></i> Copy
-                </button>
-            </div>
-        </header>
-        
-        <div class="config-section">
-            <h2><i class="fas fa-cog"></i> Configure Your Tokens</h2>
-            <div id="tokens-config-container">
-                <!-- Token configuration rows will be added here -->
-            </div>
-            <button class="add-token-btn" id="add-token-btn">
-                <i class="fas fa-plus"></i> Add Token
-            </button>
-        </div>
-        
-        <div class="stats-cards">
-            <div class="stat-card">
-                <h3><i class="fas fa-chart-line"></i> Total Portfolio Value</h3>
-                <div class="stat-value" id="total-value">$0.00</div>
-                <div id="total-change" class="positive">+0.00%</div>
-                <div class="data-source">Real-time prices from DexScreener</div>
-            </div>
-            <div class="stat-card">
-                <h3><i class="fab fa-solana"></i> SOL Balance</h3>
-                <div class="stat-value" id="sol-balance">0 SOL</div>
-                <div id="sol-change" class="positive">+0.00%</div>
-                <div class="data-source">Based on your entry</div>
-            </div>
-            <div class="stat-card">
-                <h3><i class="fas fa-coins"></i> Number of Tokens</h3>
-                <div class="stat-value" id="token-count">0</div>
-                <div>Different assets</div>
-                <div class="data-source">Configured tokens</div>
-            </div>
-            <div class="stat-card">
-                <h3><i class="fas fa-clock"></i> Last Updated</h3>
-                <div class="stat-value" id="last-updated">Never</div>
-                <button class="refresh-btn" id="refresh-btn">
-                    <i class="fas fa-sync-alt"></i> Refresh Prices
-                </button>
-                <div class="connection-status">
-                    <div class="status-indicator" id="status-indicator"></div>
-                    <span id="connection-status">Ready to fetch prices</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="portfolio-chart">
-            <div class="chart-header">
-                <h2><i class="fas fa-chart-area"></i> Portfolio Value</h2>
-                <div class="time-period-selector">
-                    <button class="period-btn" id="chart-1d">1D</button>
-                    <button class="period-btn" id="chart-1w">1W</button>
-                    <button class="period-btn active" id="chart-1m">1M</button>
-                    <button class="period-btn" id="chart-3m">3M</button>
-                </div>
-            </div>
-            <div class="chart-container">
-                <canvas id="portfolioChart"></canvas>
-            </div>
-        </div>
-        
-        <div class="tokens-section">
-            <div class="section-header">
-                <h2><i class="fas fa-list"></i> Wallet Tokens</h2>
-                <div>
-                    <input type="text" class="search-box" id="search-tokens" placeholder="Search tokens...">
-                </div>
-            </div>
-            <div id="tokens-container">
-                <div class="loading" id="tokens-loading">
-                    <i class="fas fa-spinner fa-spin"></i> Configure your tokens above and click "Refresh Prices"
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p>Solana Wallet Tracker &copy; 2023 | Real prices from DexScreener API</p>
-        </div>
-    </div>
-
-    <script>
-        // Configuration
-        const DEXSCREENER_API_URL = "https://api.dexscreener.com/latest/dex";
-        
-        // State
-        let tokenData = [];
-        let portfolioHistory = [];
-        let chart;
-        let tokenConfigs = [];
-
-        // DOM Elements
-        const totalValueEl = document.getElementById('total-value');
-        const totalChangeEl = document.getElementById('total-change');
-        const solBalanceEl = document.getElementById('sol-balance');
-        const solChangeEl = document.getElementById('sol-change');
-        const tokenCountEl = document.getElementById('token-count');
-        const lastUpdatedEl = document.getElementById('last-updated');
-        const refreshBtn = document.getElementById('refresh-btn');
-        const tokensContainer = document.getElementById('tokens-container');
-        const searchInput = document.getElementById('search-tokens');
-        const statusIndicator = document.getElementById('status-indicator');
-        const connectionStatus = document.getElementById('connection-status');
-        const tokensConfigContainer = document.getElementById('tokens-config-container');
-        const addTokenBtn = document.getElementById('add-token-btn');
-
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            initEventListeners();
-            loadDefaultTokens();
-            updateUI();
-        });
-
-        // Set up event listeners
-        function initEventListeners() {
-            refreshBtn.addEventListener('click', fetchAllPrices);
-            
-            searchInput.addEventListener('input', function() {
-                filterTokens(this.value);
-            });
-            
-            // Chart period buttons
-            document.getElementById('chart-1d').addEventListener('click', (e) => changeChartPeriod('1d', e));
-            document.getElementById('chart-1w').addEventListener('click', (e) => changeChartPeriod('1w', e));
-            document.getElementById('chart-1m').addEventListener('click', (e) => changeChartPeriod('1m', e));
-            document.getElementById('chart-3m').addEventListener('click', (e) => changeChartPeriod('3m', e));
-            
-            // Copy wallet address
-            document.querySelector('.copy-btn').addEventListener('click', function() {
-                const fullAddress = "4pRFMaN7vV35j7iQW9UCPmuWirRd3noGLywguP2i1kVc";
-                navigator.clipboard.writeText(fullAddress).then(() => {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                    }, 2000);
-                });
-            });
-            
-            // Add token button
-            addTokenBtn.addEventListener('click', addTokenConfigRow);
-        }
-
-        // Load default tokens - EDIT THESE WITH YOUR ACTUAL TOKENS
-        function loadDefaultTokens() {
-            // ================================================
-            // EDIT THESE TOKENS WITH YOUR ACTUAL HOLDINGS
-            // ================================================
-            
-            // Example tokens - replace with your actual tokens
-            tokenConfigs = [
-                {
-                    name: "Solana",
-                    symbol: "SOL",
-                    balance: 0.5, // EDIT: Put your actual SOL balance here
-                    pairAddress: "HEr6s7kXpDSMzw1Vw8r4s3eS35T6t8uB6jxvP4nNy5qQ" // This is a sample pair address
-                },
-                {
-                    name: "Bonk",
-                    symbol: "BONK",
-                    balance: 50000, // EDIT: Put your actual BONK balance here
-                    pairAddress: "6gDQ6D4VYVeGdzjUHYXA8pYT6HtdQscsndjKUR25p4nY" // This is a sample pair address
-                },
-                {
-                    name: "Jupiter",
-                    symbol: "JUP",
-                    balance: 10, // EDIT: Put your actual JUP balance here
-                    pairAddress: "4ug6VShY4BP7kH4e9kUQJ3eYV9q6qjq6e9kUQJ3eYV9q" // This is a sample pair address
-                }
-                // ADD MORE TOKENS AS NEEDED
-            ];
-            
-            // Render token configuration rows
-            renderTokenConfigs();
-        }
-
-        // Add a new token configuration row
-        function addTokenConfigRow() {
-            tokenConfigs.push({
-                name: "",
-                symbol: "",
-                balance: 0,
-                pairAddress: ""
-            });
-            renderTokenConfigs();
-        }
-
-        // Remove a token configuration row
-        function removeTokenConfig(index) {
-            tokenConfigs.splice(index, 1);
-            renderTokenConfigs();
-        }
-
-        // Render token configuration rows
-        function renderTokenConfigs() {
-            tokensConfigContainer.innerHTML = '';
-            
-            tokenConfigs.forEach((token, index) => {
-                const row = document.createElement('div');
-                row.className = 'token-config';
-                
-                // Shorten pair address for display
-                const shortPairAddress = token.pairAddress ? 
-                    `${token.pairAddress.substring(0, 6)}...${token.pairAddress.substring(token.pairAddress.length - 4)}` : '';
-                
-                row.innerHTML = `
-                    <div class="config-input-group">
-                        <div class="config-label">Token Name</div>
-                        <input type="text" class="config-input" value="${token.name}" 
-                               onchange="updateTokenConfig(${index}, 'name', this.value)" 
-                               placeholder="e.g., Solana">
-                    </div>
-                    <div class="config-input-group">
-                        <div class="config-label">Symbol</div>
-                        <input type="text" class="config-input" value="${token.symbol}" 
-                               onchange="updateTokenConfig(${index}, 'symbol', this.value)" 
-                               placeholder="e.g., SOL">
-                    </div>
-                    <div class="config-input-group">
-                        <div class="config-label">Your Balance</div>
-                        <input type="number" class="config-input" value="${token.balance}" 
-                               onchange="updateTokenConfig(${index}, 'balance', parseFloat(this.value))" 
-                               placeholder="e.g., 10.5" step="0.000001">
-                    </div>
-                    <div class="config-input-group">
-                        <div class="config-label">DexScreener Pair Address</div>
-                        <input type="text" class="config-input" value="${token.pairAddress}" 
-                               onchange="updateTokenConfig(${index}, 'pairAddress', this.value)" 
-                               placeholder="Paste pair address from DexScreener">
-                        ${token.pairAddress ? `<div class="data-source">Display: ${shortPairAddress}</div>` : ''}
-                    </div>
-                    <div>
-                        <button class="remove-token-btn" onclick="removeTokenConfig(${index})">
-                            <i class="fas fa-trash"></i> Remove
-                        </button>
-                    </div>
-                `;
-                
-                tokensConfigContainer.appendChild(row);
-            });
-        }
-
-        // Update token configuration
-        function updateTokenConfig(index, field, value) {
-            tokenConfigs[index][field] = value;
-            renderTokenConfigs();
-        }
-
-        // Update connection status UI
-        function updateConnectionStatus(connected, message = "") {
-            if (connected) {
-                statusIndicator.classList.remove('offline');
-                connectionStatus.textContent = message || 'Connected to DexScreener';
-            } else {
-                statusIndicator.classList.add('offline');
-                connectionStatus.textContent = message || 'Connection failed';
-            }
-        }
-
-        // Fetch all token prices from DexScreener
-        async function fetchAllPrices() {
-            try {
-                refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing';
-                refreshBtn.disabled = true;
-                
-                // Show loading state
-                tokensContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Fetching prices from DexScreener...</div>';
-                updateConnectionStatus(true, 'Fetching prices...');
-                
-                // Clear previous data
-                tokenData = [];
-                
-                // Filter out empty token configs
-                const validTokens = tokenConfigs.filter(token => 
-                    token.name && token.symbol && token.balance > 0 && token.pairAddress
-                );
-                
-                if (validTokens.length === 0) {
-                    tokensContainer.innerHTML = '<div class="error">Please configure at least one token with valid data</div>';
-                    updateConnectionStatus(false, 'No valid tokens configured');
-                    return;
-                }
-                
-                // Create array of pair addresses to fetch
-                const pairAddresses = validTokens.map(token => token.pairAddress);
-                
-                // Fetch data for all tokens
-                const response = await fetch(`${DEXSCREENER_API_URL}/pairs/${pairAddresses.join(',')}`);
-                if (!response.ok) throw new Error('DexScreener API error');
-                
-                const data = await response.json();
-                
-                // Process token data
-                if (data && data.pairs && data.pairs.length > 0) {
-                    for (const tokenConfig of validTokens) {
-                        // Find matching token in API response
-                        const tokenInfo = data.pairs.find(pair => 
-                            pair.pairAddress === tokenConfig.pairAddress
-                        );
-                        
-                        if (tokenInfo) {
-                            const price = parseFloat(tokenInfo.priceUsd) || 0;
-                            const priceChange = tokenInfo.priceChange ? 
-                                (parseFloat(tokenInfo.priceChange.h24) || 0) : 0;
-                            
-                            tokenData.push({
-                                name: tokenConfig.name,
-                                symbol: tokenConfig.symbol,
-                                amount: tokenConfig.balance,
-                                price: price,
-                                value: tokenConfig.balance * price,
-                                priceChange: priceChange,
-                                icon: tokenInfo.baseToken?.logoURI || null,
-                                pairAddress: tokenConfig.pairAddress
-                            });
-                        } else {
-                            // If token not found, add with zero values
-                            tokenData.push({
-                                name: tokenConfig.name,
-                                symbol: tokenConfig.symbol,
-                                amount: tokenConfig.balance,
-                                price: 0,
-                                value: 0,
-                                priceChange: 0,
-                                icon: null,
-                                pairAddress: tokenConfig.pairAddress
-                            });
-                        }
-                    }
-                } else {
-                    throw new Error('No pairs data from DexScreener');
-                }
-                
-                // Update UI with new data
-                updateStats();
-                updateTokensTable();
-                updatePortfolioChart();
-                
-                // Update last updated time
-                lastUpdatedEl.textContent = new Date().toLocaleTimeString();
-                updateConnectionStatus(true, 'Prices updated successfully');
-                
-            } catch (error) {
-                console.error('Error fetching prices:', error);
-                tokensContainer.innerHTML = '<div class="error">Error fetching prices. Please check your pair addresses and try again.</div>';
-                updateConnectionStatus(false, 'Failed to fetch prices');
-            } finally {
-                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh Prices';
-                refreshBtn.disabled = false;
-            }
-        }
-
-        // Update statistics cards
-        function updateStats() {
-            // Calculate total portfolio value
-            const totalValue = tokenData.reduce((sum, token) => sum + token.value, 0);
-            totalValueEl.textContent = `$${totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-            
-            // Calculate 24h change (weighted average based on token values)
-            let totalChangeValue = 0;
-            let totalWeight = 0;
-            
-            tokenData.forEach(token => {
-                if (token.value > 0 && token.priceChange) {
-                    totalChangeValue += token.value * (token.priceChange / 100);
-                    totalWeight += token.value;
-                }
-            });
-            
-            const totalChangePercent = totalWeight > 0 ? (totalChangeValue / totalWeight) * 100 : 0;
-            
-            totalChangeEl.textContent = `${totalChangePercent >= 0 ? '+' : ''}${totalChangePercent.toFixed(2)}%`;
-            totalChangeEl.className = totalChangePercent >= 0 ? 'positive' : 'negative';
-            
-            // Update SOL info
-            const solToken = tokenData.find(token => token.symbol === 'SOL');
-            if (solToken) {
-                solBalanceEl.textContent = `${solToken.amount.toLocaleString(undefined, { maximumFractionDigits: 6 })} SOL`;
-                solChangeEl.textContent = `${solToken.priceChange >= 0 ? '+' : ''}${solToken.priceChange.toFixed(2)}%`;
-                solChangeEl.className = solToken.priceChange >= 0 ? 'positive' : 'negative';
-            } else {
-                solBalanceEl.textContent = "0 SOL";
-                solChangeEl.textContent = "+0.00%";
-                solChangeEl.className = 'positive';
-            }
-            
-            // Update token count
-            tokenCountEl.textContent = tokenData.length;
-        }
-
-        // Update tokens table
-        function updateTokensTable() {
-            if (tokenData.length === 0) {
-                tokensContainer.innerHTML = '<div class="error">No token data available. Please configure tokens and refresh prices.</div>';
-                return;
-            }
-            
-            let html = `
-                <table class="tokens-table">
-                    <thead>
-                        <tr>
-                            <th>Token</th>
-                            <th>Your Balance</th>
-                            <th>Price</th>
-                            <th>Value</th>
-                            <th>24h Change</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            
-            tokenData.forEach(token => {
-                const changeClass = token.priceChange >= 0 ? 'positive' : 'negative';
-                const changeIcon = token.priceChange >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
-                const displayPrice = token.price < 0.01 ? token.price.toFixed(6) : token.price.toFixed(token.price < 1 ? 4 : 2);
-                const shortPairAddress = token.pairAddress ? 
-                    `${token.pairAddress.substring(0, 6)}...${token.pairAddress.substring(token.pairAddress.length - 4)}` : '';
-                
-                html += `
-                    <tr>
-                        <td>
-                            <div class="token-info">
-                                <div class="token-icon">
-                                    ${token.icon ? 
-                                        `<img src="${token.icon}" alt="${token.symbol}" onerror="this.style.display='none'">` : 
-                                        token.symbol.charAt(0)
-                                    }
-                                </div>
-                                <div>
-                                    <div class="token-name">${token.name}</div>
-                                    <div class="token-symbol">${token.symbol} <span class="short-address">${shortPairAddress}</span></div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>${token.amount.toLocaleString(undefined, { maximumFractionDigits: 6 })}</td>
-                        <td>$${displayPrice}</td>
-                        <td>$${token.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td class="${changeClass}">
-                            <i class="fas ${changeIcon}"></i>
-                            ${Math.abs(token.priceChange).toFixed(2)}%
-                        </td>
-                        <td>
-                            <div class="actions">
-                                <button class="action-btn trade" onclick="tradeToken('${token.pairAddress}')">Trade</button>
-                                <button class="action-btn" onclick="viewTokenDetails('${token.pairAddress}')">Details</button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            html += `</tbody></table>`;
-            tokensContainer.innerHTML = html;
-        }
-
-        // Update UI without fetching prices
-        function updateUI() {
-            updateStats();
-            updateTokensTable();
-        }
-
-        // Filter tokens based on search input
-        function filterTokens(searchTerm) {
-            const rows = document.querySelectorAll('.tokens-table tbody tr');
-            
-            rows.forEach(row => {
-                const tokenName = row.querySelector('.token-name').textContent.toLowerCase();
-                const tokenSymbol = row.querySelector('.token-symbol').textContent.toLowerCase();
-                const search = searchTerm.toLowerCase();
-                
-                if (tokenName.includes(search) || tokenSymbol.includes(search)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-
-        // Initialize portfolio chart
-        function initPortfolioChart() {
-            const ctx = document.getElementById('portfolioChart').getContext('2d');
-            
-            // Generate initial data for the chart
-            const dates = [];
-            const values = [];
-            
-            // Start with current portfolio value
-            const currentValue = tokenData.reduce((sum, token) => sum + token.value, 0) || 100;
-            
-            // Generate some historical data
-            for (let i = 30; i >= 0; i--) {
-                const date = new Date();
-                date.setDate(date.getDate() - i);
-                dates.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-                
-                // Simulate price fluctuations
-                const fluctuation = (Math.random() - 0.5) * 0.1; // ±5% daily change
-                const historicalValue = currentValue * (1 - (i * 0.01)) * (1 + fluctuation);
-                values.push(Math.max(historicalValue, 0));
-            }
-            
-            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-            gradient.addColorStop(0, 'rgba(153, 69, 255, 0.3)');
-            gradient.addColorStop(1, 'rgba(153, 69, 255, 0)');
-            
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: dates,
-                    datasets: [{
-                        label: 'Portfolio Value',
-                        data: values,
-                        borderColor: '#9945FF',
-                        backgroundColor: gradient,
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 0,
-                        pointHoverRadius: 5,
-                        pointBackgroundColor: '#9945FF',
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            backgroundColor: 'rgba(30, 30, 30, 0.9)',
-                            titleColor: '#FFFFFF',
-                            bodyColor: '#FFFFFF',
-                            borderColor: '#333333',
-                            borderWidth: 1,
-                            padding: 12,
-                            displayColors: false,
-                            callbacks: {
-                                title: function(tooltipItems) {
-                                    return tooltipItems[0].label;
-                                },
-                                label: function(context) {
-                                    return `Portfolio Value: $${context.parsed.y.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false,
-                                drawBorder: false
-                            },
-                            ticks: {
-                                color: '#B0B0B0',
-                                maxTicksLimit: 6
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)',
-                                drawBorder: false
-                            },
-                            ticks: {
-                                color: '#B0B0B0',
-                                callback: function(value) {
-                                    return '$' + value.toLocaleString();
-                                }
-                            }
-                        }
-                    },
-                    interaction: {
-                        intersect: false,
-                        mode: 'index'
-                    },
-                    elements: {
-                        point: {
-                            hoverRadius: 8
-                        }
-                    }
-                }
-            });
-        }
-
-        // Update portfolio chart with new data
-        function updatePortfolioChart() {
-            if (!chart) {
-                initPortfolioChart();
-                return;
-            }
-            
-            // In a real app, you would update with actual historical data
-            // For demo, we'll just add a new data point
-            const currentValue = tokenData.reduce((sum, token) => sum + token.value, 0);
-            
-            // Add new data point and remove the oldest
-            chart.data.labels.push(new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-            chart.data.labels.shift();
-            
-            chart.data.datasets[0].data.push(currentValue);
-            chart.data.datasets[0].data.shift();
-            
-            chart.update('none');
-        }
-
-        // Change chart period
-        function changeChartPeriod(period, event) {
-            // Remove active class from all buttons
-            document.querySelectorAll('.period-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Add active class to clicked button
-            event.target.classList.add('active');
-            
-            // In a real app, you would fetch new data for the selected period
-            console.log(`Changed chart period to: ${period}`);
-        }
-
-        // Token action functions
-        function tradeToken(pairAddress) {
-            window.open(`https://dexscreener.com/solana/${pairAddress}`, '_blank');
-        }
-
-        function viewTokenDetails(pairAddress) {
-            window.open(`https://dexscreener.com/solana/${pairAddress}`, '_blank');
-        }
-
-        // Initialize chart on load
-        initPortfolioChart();
-    </script>
 </body>
 </html>
