@@ -116,84 +116,116 @@
         </div>
         
         <div class="modal-body">
-          <!-- Add Token Form -->
-          <div class="add-token-form">
-            <h3>Add Token to Portfolio</h3>
+          <!-- User Identification Form -->
+          <div class="user-identification" id="userIdentification">
+            <h3>User Identification Required</h3>
+            <p class="muted">Please enter your details to track your portfolio</p>
+            
             <div class="form-group">
-              <label for="tokenSelect">Select Token:</label>
-              <select id="tokenSelect" class="token-select">
-                <option value="">Choose a token...</option>
-                <!-- Tokens will be populated dynamically -->
-              </select>
+              <label for="userId">User ID:</label>
+              <input type="text" id="userId" placeholder="Enter your unique ID" class="token-input" required>
+              <small class="muted">This will be used to identify your portfolio</small>
             </div>
             
             <div class="form-group">
-              <label for="tokenAmount">Amount of Tokens:</label>
-              <input type="number" id="tokenAmount" min="0" step="0.000001" placeholder="Enter amount" class="token-input">
+              <label for="userEmail">Email Address:</label>
+              <input type="email" id="userEmail" placeholder="Enter your email" class="token-input" required>
+              <small class="muted">We'll send you portfolio updates (optional)</small>
             </div>
             
-            <div class="form-group">
-              <label for="buyPrice">Buy Price (Optional):</label>
-              <input type="number" id="buyPrice" min="0" step="0.000001" placeholder="Enter buy price in USD" class="token-input">
-              <small class="muted">If not provided, current price will be used</small>
-            </div>
-            
-            <button id="addTokenBtn" class="add-token-btn">Add to Portfolio</button>
+            <button id="saveUserInfoBtn" class="add-token-btn">Save & Continue</button>
           </div>
 
-          <!-- Portfolio Summary -->
-          <div class="portfolio-summary" id="portfolioSummary" style="display: none;">
-            <h3>Portfolio Summary</h3>
-            <div class="summary-cards">
-              <div class="summary-card">
-                <strong>Total Value</strong>
-                <span id="totalValue" class="summary-value">$0.00</span>
-              </div>
-              <div class="summary-card">
-                <strong>Total Profit/Loss</strong>
-                <span id="totalProfitLoss" class="summary-value">$0.00</span>
-              </div>
-              <div class="summary-card">
-                <strong>Total ROI</strong>
-                <span id="totalROI" class="summary-value">0.00%</span>
+          <!-- Portfolio Content (Hidden until user identifies) -->
+          <div class="portfolio-content" id="portfolioContent" style="display: none;">
+            <!-- User Info Display -->
+            <div class="user-info-display" id="userInfoDisplay">
+              <div class="user-badge">
+                <strong>User:</strong> <span id="displayUserId">-</span> | 
+                <strong>Email:</strong> <span id="displayUserEmail">-</span>
+                <button id="editUserInfoBtn" class="edit-user-btn">Edit</button>
               </div>
             </div>
-          </div>
 
-          <!-- Portfolio Table -->
-          <div class="portfolio-table-container" id="portfolioTableContainer" style="display: none;">
-            <h3>Your Holdings</h3>
-            <div class="table-scroll-wrapper">
-              <table class="portfolio-table">
-                <thead>
-                  <tr>
-                    <th>Token</th>
-                    <th>Amount</th>
-                    <th>Avg Buy Price</th>
-                    <th>Current Price</th>
-                    <th>Current Value</th>
-                    <th>Profit/Loss</th>
-                    <th>ROI</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="portfolioTableBody">
-                  <!-- Portfolio items will be populated here -->
-                </tbody>
-              </table>
+            <!-- Add Token Form -->
+            <div class="add-token-form">
+              <h3>Add Token to Portfolio</h3>
+              <div class="form-group">
+                <label for="tokenSelect">Select Token:</label>
+                <select id="tokenSelect" class="token-select">
+                  <option value="">Choose a token...</option>
+                  <!-- Tokens will be populated dynamically -->
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="tokenAmount">Amount of Tokens:</label>
+                <input type="number" id="tokenAmount" min="0" step="0.000001" placeholder="Enter amount" class="token-input">
+              </div>
+              
+              <div class="form-group">
+                <label for="buyPrice">Buy Price (Optional):</label>
+                <input type="number" id="buyPrice" min="0" step="0.000001" placeholder="Enter buy price in USD" class="token-input">
+                <small class="muted">If not provided, current price will be used</small>
+              </div>
+              
+              <button id="addTokenBtn" class="add-token-btn">Add to Portfolio</button>
             </div>
-          </div>
 
-          <!-- Empty Portfolio State -->
-          <div class="empty-portfolio" id="emptyPortfolio">
-            <div class="empty-state">
-              <h3>No tokens in portfolio yet</h3>
-              <p>Add your first token to start tracking your investments</p>
+            <!-- Portfolio Summary -->
+            <div class="portfolio-summary" id="portfolioSummary" style="display: none;">
+              <h3>Portfolio Summary</h3>
+              <div class="summary-cards">
+                <div class="summary-card">
+                  <strong>Total Value</strong>
+                  <span id="totalValue" class="summary-value">$0.00</span>
+                </div>
+                <div class="summary-card">
+                  <strong>Total Profit/Loss</strong>
+                  <span id="totalProfitLoss" class="summary-value">$0.00</span>
+                </div>
+                <div class="summary-card">
+                  <strong>Total ROI</strong>
+                  <span id="totalROI" class="summary-value">0.00%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Portfolio Table -->
+            <div class="portfolio-table-container" id="portfolioTableContainer" style="display: none;">
+              <h3>Your Holdings</h3>
+              <div class="table-scroll-wrapper">
+                <table class="portfolio-table">
+                  <thead>
+                    <tr>
+                      <th>Token</th>
+                      <th>Amount</th>
+                      <th>Avg Buy Price</th>
+                      <th>Current Price</th>
+                      <th>Current Value</th>
+                      <th>Profit/Loss</th>
+                      <th>ROI</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="portfolioTableBody">
+                    <!-- Portfolio items will be populated here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Empty Portfolio State -->
+            <div class="empty-portfolio" id="emptyPortfolio">
+              <div class="empty-state">
+                <h3>No tokens in portfolio yet</h3>
+                <p>Add your first token to start tracking your investments</p>
+              </div>
             </div>
           </div>
         </div>
         
-        <div class="modal-footer">
+        <div class="modal-footer" id="portfolioFooter" style="display: none;">
           <button id="clearPortfolioBtn" class="clear-portfolio-btn">Clear Portfolio</button>
           <button id="exportPortfolioBtn" class="export-portfolio-btn">Export Data</button>
         </div>

@@ -75,17 +75,61 @@ function calculatePercentageRise(currentPrice, listingPrice) {
   return percentage;
 }
 
-// ---------- Enhanced Portfolio Manager ----------
+// ---------- Enhanced Portfolio Manager with User Identification ----------
 class PortfolioManager {
   constructor() {
+    this.USER_INFO_KEY = 'tikstake_user_info';
+    this.PORTFOLIO_KEY_PREFIX = 'tikstake_portfolio_';
+    this.userInfo = this.loadUserInfo();
     this.holdings = this.loadPortfolio();
-    this.PORTFOLIO_KEY = 'tikstake_portfolio';
     this.availableTokens = new Map();
   }
 
-  loadPortfolio() {
+  loadUserInfo() {
     try {
-      return JSON.parse(localStorage.getItem(this.PORTFOLIO_KEY)) || {};
+      return JSON.parse(localStorage.getItem(this.USER_INFO_KEY)) || null;
+    } catch (error) {
+      console.error('Error loading user info:', error);
+      return null;
+    }
+  }
+
+  saveUserInfo(userId, userEmail) {
+    try {
+      const userInfo = {
+        userId: userId.trim(),
+        userEmail: userEmail.trim(),
+        createdAt: new Date().toISOString(),
+        lastAccessed: new Date().toISOString()
+      };
+      
+      localStorage.setItem(this.USER_INFO_KEY, JSON.stringify(userInfo));
+      this.userInfo = userInfo;
+      this.holdings = this.loadPortfolio(); // Reload portfolio for this user
+      return true;
+    } catch (error) {
+      console.error('Error saving user info:', error);
+      return false;
+    }
+  }
+
+  updateLastAccessed() {
+    if (this.userInfo) {
+      this.userInfo.lastAccessed = new Date().toISOString();
+      localStorage.setItem(this.USER_INFO_KEY, JSON.stringify(this.userInfo));
+    }
+  }
+
+  getPortfolioKey() {
+    return this.userInfo ? `${this.PORTFOLIO_KEY_PREFIX}${this.userInfo.userId}` : null;
+  }
+
+  loadPortfolio() {
+    const portfolioKey = this.getPortfolioKey();
+    if (!portfolioKey) return {};
+
+    try {
+      return JSON.parse(localStorage.getItem(portfolioKey)) || {};
     } catch (error) {
       console.error('Error loading portfolio:', error);
       return {};
@@ -93,11 +137,20 @@ class PortfolioManager {
   }
 
   savePortfolio() {
+    const portfolioKey = this.getPortfolioKey();
+    if (!portfolioKey) return false;
+
     try {
-      localStorage.setItem(this.PORTFOLIO_KEY, JSON.stringify(this.holdings));
+      localStorage.setItem(portfolioKey, JSON.stringify(this.holdings));
+      return true;
     } catch (error) {
       console.error('Error saving portfolio:', error);
+      return false;
     }
+  }
+
+  isUserIdentified() {
+    return this.userInfo !== null;
   }
 
   initializeAvailableTokens() {
@@ -128,6 +181,11 @@ class PortfolioManager {
   }
 
   addHolding(pairId, amount, buyPrice = null) {
+    if (!this.isUserIdentified()) {
+      alert('Please complete user identification first');
+      return false;
+    }
+
     const token = this.availableTokens.get(pairId);
     if (!token) {
       alert('Token not found in available list');
@@ -144,7 +202,8 @@ class PortfolioManager {
       buyPrice: buyPrice ? parseFloat(buyPrice) : (token.price || 0),
       currentPrice: token.price || 0,
       timestamp: new Date().toISOString(),
-      id: this.generateId()
+      id: this.generateId(),
+      userId: this.userInfo.userId // Track which user added this
     };
 
     if (!this.holdings[pairId]) {
@@ -154,6 +213,10 @@ class PortfolioManager {
     this.holdings[pairId].push(holding);
     this.savePortfolio();
     this.updatePortfolioUI();
+    
+    // Store in database
+    this.storePortfolioInDatabase();
+    
     return true;
   }
 
@@ -165,6 +228,9 @@ class PortfolioManager {
       }
       this.savePortfolio();
       this.updatePortfolioUI();
+      
+      // Update database
+      this.storePortfolioInDatabase();
     }
   }
 
@@ -230,11 +296,15 @@ class PortfolioManager {
       this.holdings = {};
       this.savePortfolio();
       this.updatePortfolioUI();
+      
+      // Update database
+      this.storePortfolioInDatabase();
     }
   }
 
   exportPortfolio() {
     const portfolioData = {
+      userInfo: this.userInfo,
       holdings: this.holdings,
       summary: this.calculatePortfolioValue(),
       exportDate: new Date().toISOString()
@@ -245,19 +315,70 @@ class PortfolioManager {
     
     const link = document.createElement('a');
     link.href = URL.createObjectURL(dataBlob);
-    link.download = `tikstake-portfolio-${new Date().toISOString().split('T')[0]}.json`;
+    link.download = `tikstake-portfolio-${this.userInfo.userId}-${new Date().toISOString().split('T')[0]}.json`;
     link.click();
   }
 
+  async storePortfolioInDatabase() {
+    if (!this.isUserIdentified()) return;
+
+    try {
+      const response = await fetch('./api/store_portfolio.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userInfo: this.userInfo,
+          holdings: this.holdings
+        })
+      });
+
+      const result = await response.json();
+      console.log('Portfolio stored in database:', result);
+    } catch (error) {
+      console.error('Error storing portfolio in database:', error);
+    }
+  }
+
+  updateUserDisplay() {
+    const displayUserId = document.getElementById('displayUserId');
+    const displayUserEmail = document.getElementById('displayUserEmail');
+    
+    if (displayUserId && displayUserEmail && this.userInfo) {
+      displayUserId.textContent = this.userInfo.userId;
+      displayUserEmail.textContent = this.userInfo.userEmail;
+    }
+  }
+
   updatePortfolioUI() {
+    const userIdentification = document.getElementById('userIdentification');
+    const portfolioContent = document.getElementById('portfolioContent');
+    const portfolioFooter = document.getElementById('portfolioFooter');
     const portfolioSummary = document.getElementById('portfolioSummary');
     const portfolioTableContainer = document.getElementById('portfolioTableContainer');
     const emptyPortfolio = document.getElementById('emptyPortfolio');
     const portfolioTableBody = document.getElementById('portfolioTableBody');
 
+    // Show/hide based on user identification
+    if (userIdentification && portfolioContent && portfolioFooter) {
+      if (this.isUserIdentified()) {
+        userIdentification.style.display = 'none';
+        portfolioContent.style.display = 'block';
+        portfolioFooter.style.display = 'flex';
+        this.updateUserDisplay();
+      } else {
+        userIdentification.style.display = 'block';
+        portfolioContent.style.display = 'none';
+        portfolioFooter.style.display = 'none';
+        return;
+      }
+    }
+
     const portfolioValue = this.calculatePortfolioValue();
     const hasHoldings = Object.keys(this.holdings).length > 0;
 
+    // Show/hide empty state
     if (emptyPortfolio) {
       emptyPortfolio.style.display = hasHoldings ? 'none' : 'block';
     }
@@ -270,6 +391,7 @@ class PortfolioManager {
 
     if (!hasHoldings) return;
 
+    // Update summary
     if (document.getElementById('totalValue')) {
       document.getElementById('totalValue').textContent = fmtMoney(portfolioValue.totalValue);
     }
@@ -284,6 +406,7 @@ class PortfolioManager {
       roiElem.className = `summary-value ${portfolioValue.totalProfitLossPercent >= 0 ? 'profit-positive' : 'profit-negative'}`;
     }
 
+    // Update portfolio table
     if (portfolioTableBody) {
       portfolioTableBody.innerHTML = '';
 
@@ -324,6 +447,77 @@ class PortfolioManager {
 }
 
 const portfolioManager = new PortfolioManager();
+
+// ---------- Database Storage Functions ----------
+class DatabaseManager {
+    constructor() {
+        this.baseUrl = './api/'; // Path to your PHP API
+    }
+
+    async storeTokens(tokens, category) {
+        try {
+            const response = await fetch(this.baseUrl + 'store_tokens.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    tokens: tokens,
+                    category: category
+                })
+            });
+
+            const result = await response.json();
+            console.log(`Stored ${category} tokens:`, result);
+            return result;
+        } catch (error) {
+            console.error('Error storing tokens in database:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async getTokens(category = 'all') {
+        try {
+            const response = await fetch(`${this.baseUrl}get_tokens.php?category=${category}`);
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('Error fetching tokens from database:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async getTokenStats() {
+        try {
+            const response = await fetch(this.baseUrl + 'get_token_stats.php');
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('Error fetching token stats:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    // Convert token data to database format
+    prepareTokenData(tokens, category) {
+        return tokens.map(token => ({
+            pairId: token.pairId,
+            name: token.name,
+            symbol: token.symbol,
+            price: token.price,
+            volume: token.volume,
+            change: token.change,
+            liquidityUsd: token.liquidityUsd,
+            marketCap: token.marketCap,
+            tokenAddress: token.tokenAddress,
+            addedDate: token.addedDate,
+            listingPrice: token.listingPrice,
+            category: category
+        }));
+    }
+}
+
+const dbManager = new DatabaseManager();
 
 // ---------- Theme handling ----------
 const THEME_KEY = 'tikstake_theme';
@@ -1008,7 +1202,7 @@ function openChart(pairId) {
   w.document.close();
 }
 
-// ---------- Modal functionality ----------
+// ---------- Enhanced Modal functionality with User Identification ----------
 function setupModals() {
   // Trade Modal
   const tradeModal = document.getElementById("tradeModal");
@@ -1023,15 +1217,19 @@ function setupModals() {
     tradeModal.style.display = "none";
   }
 
-  // Portfolio Modal
+  // Portfolio Modal with User Identification
   const portfolioModal = document.getElementById("portfolioModal");
   const portfolioBtn = document.getElementById("portfolioBtn");
   const portfolioClose = portfolioModal.getElementsByClassName("close")[0];
 
   portfolioBtn.onclick = function() {
+    // Initialize available tokens
     portfolioManager.initializeAvailableTokens();
     portfolioManager.populateTokenDropdown();
+    
+    // Update UI based on user identification status
     portfolioManager.updatePortfolioUI();
+    
     portfolioModal.style.display = "block";
   }
 
@@ -1039,13 +1237,16 @@ function setupModals() {
     portfolioModal.style.display = "none";
   }
 
-  window.onclick = function(event) {
-    if (event.target == tradeModal) {
-      tradeModal.style.display = "none";
-    }
-    if (event.target == portfolioModal) {
-      portfolioModal.style.display = "none";
-    }
+  // Save User Information
+  const saveUserInfoBtn = document.getElementById('saveUserInfoBtn');
+  if (saveUserInfoBtn) {
+    saveUserInfoBtn.addEventListener('click', saveUserInformation);
+  }
+
+  // Edit User Information
+  const editUserInfoBtn = document.getElementById('editUserInfoBtn');
+  if (editUserInfoBtn) {
+    editUserInfoBtn.addEventListener('click', editUserInformation);
   }
 
   // Add token functionality
@@ -1069,9 +1270,83 @@ function setupModals() {
       portfolioManager.exportPortfolio();
     });
   }
+
+  // Close modals when clicking outside
+  window.onclick = function(event) {
+    if (event.target == tradeModal) {
+      tradeModal.style.display = "none";
+    }
+    if (event.target == portfolioModal) {
+      portfolioModal.style.display = "none";
+    }
+  }
+}
+
+function saveUserInformation() {
+  const userIdInput = document.getElementById('userId');
+  const userEmailInput = document.getElementById('userEmail');
+  
+  const userId = userIdInput.value.trim();
+  const userEmail = userEmailInput.value.trim();
+
+  // Basic validation
+  if (!userId) {
+    alert('Please enter a User ID');
+    return;
+  }
+
+  if (!userEmail) {
+    alert('Please enter your email address');
+    return;
+  }
+
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(userEmail)) {
+    alert('Please enter a valid email address');
+    return;
+  }
+
+  // Save user information
+  const success = portfolioManager.saveUserInfo(userId, userEmail);
+  
+  if (success) {
+    // Update the UI
+    portfolioManager.updatePortfolioUI();
+    
+    // Show success message
+    const saveUserInfoBtn = document.getElementById('saveUserInfoBtn');
+    const originalText = saveUserInfoBtn.textContent;
+    saveUserInfoBtn.textContent = '✓ Saved!';
+    saveUserInfoBtn.style.background = 'var(--change-positive)';
+    
+    setTimeout(() => {
+      saveUserInfoBtn.textContent = originalText;
+      saveUserInfoBtn.style.background = '';
+    }, 2000);
+  } else {
+    alert('Error saving user information. Please try again.');
+  }
+}
+
+function editUserInformation() {
+  // Clear current user info and show identification form again
+  localStorage.removeItem(portfolioManager.USER_INFO_KEY);
+  portfolioManager.userInfo = null;
+  portfolioManager.updatePortfolioUI();
+  
+  // Clear form fields
+  document.getElementById('userId').value = '';
+  document.getElementById('userEmail').value = '';
 }
 
 function addTokenToPortfolio() {
+  // Check if user is identified
+  if (!portfolioManager.isUserIdentified()) {
+    alert('Please complete user identification first');
+    return;
+  }
+
   const tokenSelect = document.getElementById('tokenSelect');
   const tokenAmount = document.getElementById('tokenAmount');
   const buyPrice = document.getElementById('buyPrice');
@@ -1093,10 +1368,13 @@ function addTokenToPortfolio() {
   const success = portfolioManager.addHolding(selectedToken, amount, price);
   
   if (success) {
+    // Clear form
     tokenSelect.value = '';
     tokenAmount.value = '';
     buyPrice.value = '';
     
+    // Show success message
+    const addTokenBtn = document.getElementById('addTokenBtn');
     const originalText = addTokenBtn.textContent;
     addTokenBtn.textContent = '✓ Added!';
     addTokenBtn.style.background = 'var(--change-positive)';
@@ -1121,7 +1399,7 @@ function updatePortfolioPrices() {
   portfolioManager.updatePortfolioUI();
 }
 
-// ---------- Loading with improved state management ----------
+// ---------- Enhanced Loading Functions with Database Storage ----------
 async function loadPopularTokens() {
   const tbody = document.getElementById('popular-tokens');
   if (tbody) tbody.innerHTML = '<tr><td colspan="7" class="loading">Loading popular tokens...</td></tr>';
@@ -1135,6 +1413,11 @@ async function loadPopularTokens() {
       console.warn('Failed to load popular pair:', pid, e);
     }
   }
+  
+  // Store in database
+  const dbTokens = dbManager.prepareTokenData(popularListings, 'popular');
+  await dbManager.storeTokens(dbTokens, 'popular');
+  
   renderTable(popularListings, 'popular-tokens', false);
   updateLastUpdated();
   updatePortfolioPrices();
@@ -1153,6 +1436,11 @@ async function loadNewTokens() {
       console.warn('Failed to load new pair:', pid, e);
     }
   }
+  
+  // Store in database
+  const dbTokens = dbManager.prepareTokenData(newListings, 'new');
+  await dbManager.storeTokens(dbTokens, 'new');
+  
   renderTable(newListings, 'new-tokens', true);
   updateLastUpdated();
   updatePortfolioPrices();
@@ -1171,6 +1459,11 @@ async function loadHighRiskTokens() {
       console.warn('Failed to load high risk pair:', pid, e);
     }
   }
+  
+  // Store in database
+  const dbTokens = dbManager.prepareTokenData(highRiskListings, 'high_risk');
+  await dbManager.storeTokens(dbTokens, 'high_risk');
+  
   renderTable(highRiskListings, 'highrisk-tokens', true, true);
   updateLastUpdated();
   updatePortfolioPrices();
@@ -1214,6 +1507,24 @@ function monitorConnection() {
   window.addEventListener('offline', () => updateStatus(false));
 }
 
+// Database Status Display
+function setupDatabaseStatus() {
+  const statusElement = document.getElementById('connectionStatus');
+  if (!statusElement) return;
+
+  // Check database connection
+  dbManager.getTokenStats().then(stats => {
+    if (stats.success) {
+      const statusText = document.getElementById('statusText');
+      if (statusText) {
+        statusText.innerHTML = `Connected • DB: ${stats.stats.total_tokens} tokens`;
+      }
+    }
+  }).catch(error => {
+    console.log('Database not available, using local storage only');
+  });
+}
+
 // Setup auto refresh
 function setupAutoRefresh() {
   if (autoRefreshInterval) {
@@ -1230,6 +1541,7 @@ function init() {
   initTheme();
   monitorConnection();
   setupModals();
+  setupDatabaseStatus();
   
   const search = document.getElementById('searchInput');
   const sort = document.getElementById('sortSelect');
